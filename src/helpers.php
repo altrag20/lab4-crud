@@ -19,8 +19,9 @@ function csrf_field(): string
 }
 function csrf_check(): void
 {
-    $token = $_POST['csrf'] ?? '';
-    if (!is_string($token) || !hash_equals($_SESSION['csrf'] ?? '', $token)) {
+    $token   = $_POST['csrf'] ?? '';
+    $session = $_SESSION['csrf'] ?? '';
+    if (!is_string($token) || $token === '' || $session === '' || !hash_equals($session, $token)) {
         http_response_code(419);
         exit('419: недійсний або відсутній CSRF-токен. Поверніться назад і оновіть сторінку.');
     }
